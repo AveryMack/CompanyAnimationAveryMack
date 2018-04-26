@@ -1,10 +1,14 @@
 -----------------------------------------------------------------------------------------
 --
 -- splash_screen.lua
+--
 -- Created by: Avery Mack
--- Date: April 10, 2018
+--
+-- Date: April 26, 2018
+--
 -- Description: This is the splash screen of the game. It displays the 
--- company logo that...
+-- company logo that fades in, flys across the screen spinning and plays sound.
+-- Their is also text that fades in at the top saying FAZ Games.
 -----------------------------------------------------------------------------------------
 
 -- Use Composer Library
@@ -25,26 +29,23 @@ local scene = composer.newScene( sceneName )
 -- The local variables for this scene
 local logo
 local scrollSpeed = 8
-local FAZGames = audio.loadSound("sounds/Woosh-boomEdited.mp3")
+local FAZGames = audio.loadSound("sounds/FAZGamesEdited.wav")
 local FAZGamesChannel
 local FAZGamesText
-
+local rotationSpeed = 3
+local speed = 3
 --------------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 --------------------------------------------------------------------------------------------
 
-local rotationSpeed = 3
-local speed = 3
 
-
--- The function that moves the puppy across the screen and makes it rotate and fade in
+-- The function that moves the logo across the screen and makes it rotate and fade in
 local function moveLogo()
-    logo.alpha = logo.alpha + 0.008
+    logo.alpha = logo.alpha + 0.01
     logo.x = logo.x + scrollSpeed
     logo.rotation = logo.rotation + speed
-    FAZGamesText.alpha = FAZGamesText.alpha + 0.008
+    FAZGamesText.alpha = FAZGamesText.alpha + 0.01
 end
-
 
 
 -----------------------------------------------------------------------------------------
@@ -60,13 +61,8 @@ function scene:create( event )
     -- set the background to be black
     display.setDefault("background", 0, 0, 0)
 
-    -- Insert the puppy image
+    -- Insert the logo image
     logo = display.newImageRect("Images/CompanyLogoAvery.png", 200, 200)
-
-    -- create the text that will say Faz Games
-    FAZGamesText = display.newText("FAZ Games", display.contentWidth/2, display.contentHeight*0.5/3, nil, 50)
-    FAZGamesText:setTextColor(1,1,1)
-    FAZGamesText.alpha = 0
 
     -- make the logo transpearent 
     logo.alpha = 0
@@ -77,6 +73,12 @@ function scene:create( event )
 
     -- Insert objects into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( logo )
+
+    -- create the text that will say FAZ Games
+    FAZGamesText = display.newText("FAZ Games", display.contentWidth/2, display.contentHeight*0.5/3, nil, 50)
+    FAZGamesText:setTextColor(143/255, 105/255, 18/255)
+    FAZGamesText.alpha = 0
+
 
 end -- function scene:create( event )
 
@@ -103,7 +105,7 @@ function scene:show( event )
         -- start the splash screen music
         FAZGamesChannel = audio.play( FAZGames )
 
-        -- Call the movepuppy function as soon as we enter the frame.
+        -- Call the moveLogo function as soon as we enter the frame.
         Runtime:addEventListener("enterFrame", moveLogo)
 
 
@@ -132,7 +134,7 @@ function scene:hide( event )
     -- Called immediately after scene goes off screen.
     elseif ( phase == "did" ) then
         
-        -- stop the jungle sounds channel for this screen
+        -- stop FAZ Games channel for this screen
         audio.stop(FAZGamesChannel)
     end
 
